@@ -1,1 +1,2 @@
+Isidro
 Checar el codigo de visualizacion de la camara, acceder desde su branch, crear un archivo y escribir el codigo.
