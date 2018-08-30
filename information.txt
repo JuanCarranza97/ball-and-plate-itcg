@@ -1,1 +1,2 @@
 1.- Checar el codigo de visualizacion de la camara, acceder desde su branch, crear un archivo y escribir el codigo.
+2.- Buscar como abrir una imagen utilizando opencv2, y crear el archivo de ejemplo (Cada quien lo debe de subir a su branch).
