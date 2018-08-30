@@ -1,10 +1,10 @@
 from picamera import PiCamera
 from time import sleep
 
-camera = PiCamera()
+cam = PiCamera()
 
-camera.start_preview()
+cam.start_preview()
 print("Initializing")
 sleep(10)
 print("Done")
-camera.stop_preview()
+cam.stop_preview()
