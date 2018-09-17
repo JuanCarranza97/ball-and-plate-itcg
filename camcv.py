@@ -1,20 +1,18 @@
-# import the necessary packages
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+import picamera
 import time
-import cv2
+import cv2 as cv
+
+#Apertura 
+c = PiCamera()
+rawC = PiRGBArray(c)
  
-# initialize the camera and grab a reference to the raw camera capture
-camera = PiCamera()
-rawCapture = PiRGBArray(camera)
- 
-# allow the camera to warmup
+#Tiempo de captura
 time.sleep(0.0001)
  
-# grab an image from the camera
-camera.capture(rawCapture, format="bgr")
-image = rawCapture.array
+#Toma una captura de la camara
+c.capture(rawC, format="bgr")
+ima = rawC.array
  
-# display the image on screen and wait for a keypress
-cv2.imshow("Image", image)
+#Muestra de imagen y espera de presionar una tecla
+cv2.imshow("Image", ima)
 cv2.waitKey(0)
