@@ -1,22 +1,34 @@
 import RPi.GPIO as g
-import pigpio as pig
 import time as t
 
-pi=pig.pi() #conecxión con RPi
-
-pi.set_mode(3,pig.OUTPUT) #modo de GPIO
-
-pi.set_servo_pulsewidth(3,1500) #inicio del servo
-t.sleep(1)
-
-#recorrido entre -90° y 90°
-for _i in range(5):
-    pi.set_servo_pulsewidth(3,2500)
+g.setwarnings(False)
+g.cleanup()
+g.setmode(g.BOARD)
+g.setup(7,g.OUT)
+sv=g.PWM(7,50)
+sv.start(7.5)
+t.sleep(3)
+"""
+try:
+    while True:
+        sv.ChangeDutyCycle(2.5)
+        t.sleep(2)
+        sv.ChangeDutyCycle(7.5)
+        t.sleep(2)
+        sv.ChangeDutyCycle(12.5)
+        t.sleep(2)
+except KeyboardInterrupt:
+    sv.stop()
+    g.cleanup()
+"""
+for _i in range(3):
+    sv.ChangeDutyCycle(2.5)
     t.sleep(2)
-    pi.set_servo_pulsewidth(3,600)
+    sv.ChangeDutyCycle(12.5)
     t.sleep(2)
-    pi.set_servo_pulsewidth(3,1500)
+    sv.ChangeDutyCycle(7.5)
     t.sleep(2)
     
-pi.set_servo_pulsewidth(3,0)#finalizacion de pulsos
-pi.stop()
+sv.ChangeDutyCycle(7.5)
+g.cleanup()
+#"""

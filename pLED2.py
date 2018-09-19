@@ -1,7 +1,7 @@
-import pigpio as g
+import RPi.GPIO as g
 import time as t
 
-g.setmode(g.BCM)
+g.setmode(g.BOARD)
 g.setup(3, g.OUT)
 
 while True:
