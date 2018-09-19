@@ -4,8 +4,8 @@ import time as t
 g.setwarnings(False)
 g.cleanup()
 g.setmode(g.BOARD)
-g.setup(3,g.OUT)#LED final
-g.setup(5,g.OUT)#LED inicio
+g.setup(13,g.OUT)#LED final
+g.setup(15,g.OUT)#LED inicio
 g.setup(7,g.OUT)#salida a servo
 g.setup(11,g.IN)#PushButton
 
@@ -23,23 +23,27 @@ while True:
         if bt==True:
             t.sleep(0.3)
             continue
-        if i=0:
+        if i==0:
             G.output(3, True)
-            elif i=17:
+            if i==17:
                 G.output(17, True)
-                else G.output(17, False)
-            else G.output(3, False)
+                else:
+                    G.output(17, False)
+            else:
+                G.output(3, False)
         p=p+c
         sv.ChangeDutyCycle(p)
     for i in range(18):
         if bt==True:
             t.sleep(0.3)
             continue
-        if i=0:
+        if i==0:
             G.output(3, True)
-            elif i=17:
+            if i==17:
                 G.output(17, True)
-                else G.output(17, False)
-            else G.output(3, False)
+                else:
+                    G.output(17, False)
+            else:
+                G.output(3, False)
         p=p-c
         sv.ChangeDutyCycle(p)
