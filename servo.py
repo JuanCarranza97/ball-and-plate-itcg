@@ -3,7 +3,7 @@ import time as t
 
 pi=pig.pi() #conecxión con RPi
 
-pi.set_mode(2,pig,OUTPUT) #modo de GPIO
+pi.set_mode(2,pig.OUTPUT) #modo de GPIO
 
 pi.set_servo_pulsewidth(2,1500) #inicio del servo
 t.sleep(1)
