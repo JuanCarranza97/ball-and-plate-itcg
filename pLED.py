@@ -1,5 +1,6 @@
 import RPi.GPIO as G
 import time as t
+import cv2 as cv
 
 G.setmode(G.BOARD)
 G.setup(5, G.OUT)
