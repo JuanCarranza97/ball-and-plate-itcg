@@ -11,6 +11,6 @@ while True:
     G.output(5, False)
     t.sleep(.5)
     
-    k=cv.waitKey(1)&0xFF
+    k=cv.waitKey(0) & 0xFF
     if k==27:
 	 break
