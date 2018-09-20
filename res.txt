@@ -1,0 +1,4 @@
+#Abrir servidor con nueva resolución
+vncserver -geometry 1366x768 :1
+
+#vncserver -kill :1
