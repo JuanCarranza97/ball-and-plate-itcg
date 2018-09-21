@@ -1,0 +1,6 @@
+git checkout name	#sirve para cambiar carpta de ususario
+git status		#sirve para checar el estado de la carpeta
+git add			#sirve para actualizar el estado de un archivo
+git commit -m "text"	#sirve para enviar un mensaje
+git push -u origin user	#sirve para subir los ficheros en la carpeta en la nube
+git pull		#sirve para bajar los ficheros en la carpeta del sistema
