@@ -22,28 +22,31 @@ while True:
     for i in range(18):
         if bt==True:
             t.sleep(0.3)
-            continue
+            i=i+1
         if i==0:
-            G.output(3, True)
+            g.output(13, True)
             if i==17:
-                G.output(17, True)
-                else:
-                    G.output(17, False)
+                g.output(15, True)
             else:
-                G.output(3, False)
+                g.output(15, False)
+        else:
+            g.output(13, False)
         p=p+c
         sv.ChangeDutyCycle(p)
     for i in range(18):
         if bt==True:
             t.sleep(0.3)
-            continue
+            i=i+1
         if i==0:
-            G.output(3, True)
+            g.output(13, True)
             if i==17:
-                G.output(17, True)
-                else:
-                    G.output(17, False)
+                g.output(15, True)
             else:
-                G.output(3, False)
+                g.output(15, False)
+        else:
+            g.output(13, False)
         p=p-c
         sv.ChangeDutyCycle(p)
+    if KeyboardInterrupt:
+        sv.stop()
+        g.cleanup()
