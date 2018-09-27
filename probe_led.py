@@ -7,13 +7,15 @@ pca = driver(i2c)
 
 pca.frequency = 50
 
-ser1 = pca.channels[0]
-ser2 = pca.channels[4]
-ser3 = pca.channels[8]
 led1 = pca.channels[12]
 led2 = pca.channels[15]
 
-for i in range(0xffff,0,-50):
-	led1.duty_cycle = i
-	led2.duty_cycle = 0xffff - i
+while True:
+	for i in range(0xffff,0,-25):
+		led1.duty_cycle = i
+		led2.duty_cycle = 0xffff - i
+	
+	for i in range(0,0xffff,25):
+		led1.duty_cycle = i
+		led2.duty_cycle = 0xffff - i
 	
