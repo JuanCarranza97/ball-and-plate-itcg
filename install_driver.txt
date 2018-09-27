@@ -1,0 +1,11 @@
+#Para instalar los drivers primero hay que acceder al siguiente link
+#En este, hay que seguir los pasos para instalar tambien el I2C y SPI
+https://learn.adafruit.com/circuitpython-on-raspberrypi-linux
+
+#Despues de esos pasos hay que ejecutar probe_adafruit.py para
+#probar los protocolos de comunicación
+
+#Una vez que funcionen hay que instalar ahora la libreria del driver
+#con los siguientes comandos
+sudo pip3 install adafruit-circuitpython-pca9685
+sudo pip3 install adafruit-circuitpython-motor
