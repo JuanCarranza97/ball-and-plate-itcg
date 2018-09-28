@@ -1,0 +1,5 @@
+#Pasos para conectar e intalar librerias para el MCP3008
+https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008
+
+#Datasheet del IC MCP3008
+http://booleanbite.com/web/wp-content/uploads/2014/12/MCP3008.pdf
