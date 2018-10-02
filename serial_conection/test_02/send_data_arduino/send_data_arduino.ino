@@ -3,8 +3,10 @@ void setup(){
 }
 
 void loop(){
-  for(int i = 0;i<10;i++){
-    Serial.print(i);
+  for(int i = 0;i<11;i++){
+    Serial.println("a"+String(i));
     delay(500);
   }
+  Serial.println("b0");
+  delay(2000);
 }
