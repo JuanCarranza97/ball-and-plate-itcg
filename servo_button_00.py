@@ -13,6 +13,7 @@ def button_01_pressed():
     if servo_01.angle != 180:
         servo_01.angle+=10
         print("The servo_01 angle is {}".format(servo_01.angle))
+
         if servo_01.angle == 180:
             led_01.on()
         else:
@@ -25,6 +26,7 @@ def button_02_pressed():
     if servo_01.angle != 0: 
         servo_01.angle-=10
         print("The servo_01 angle is {}".format(servo_01.angle))
+
         if servo_01.angle == 0:
             led_02.on()
         else:
