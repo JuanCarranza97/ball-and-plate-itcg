@@ -2,13 +2,10 @@
 #define UART_1_H
 
   #include <Arduino.h>
-
-  #include "ARROB_CONFIG.h"
   
   #define UART_PORT          Serial
   #define UART_BAUD          115200
-
-  #define MAX_TIME             2000
+  
   #define CHAR_ENDS              '\n'
   #define NUMBERS_BETWEEN         ','
   
