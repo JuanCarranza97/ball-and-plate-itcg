@@ -1,14 +1,14 @@
 #include "UART.h"
 
 //Arduino connections
-#define X1    A0 //X+
-#define X2    A2 //X-
-#define Y1    A3 //Y+
-#define Y2    A1 //y-
+#define Y1  A3 
+#define X2  A2 
+#define Y2  A1 
+#define X1  A0 
 
 //Touch Screen Settings
-#define X_RESOLUTION   800 
-#define Y_RESOLUTION   600
+#define X_RESOLUTION  900
+#define Y_RESOLUTION  800
 int x_pos,y_pos;
 
 void setup(){
@@ -23,11 +23,11 @@ void loop(){
 
         if(uart_get(&caracter,&bufferSize,Numbers)){
           switch (caracter){
-            case 'p'://Raspberry request screen position
+            case 's'://Raspberry request screen position
               if(bufferSize == 2){
                 for(int i = 0;i<Numbers[0];i++){
                   update_screen();
-                  UART_PORT.println("P"+String(x_pos)+","+String(y_pos)); 
+                  UART_PORT.println("Coordenadas ("+String(x_pos)+","+String(y_pos)+")"); 
                   delay(Numbers[1]);
                 }      
               }
@@ -63,7 +63,7 @@ void loop(){
   }
 }
 
-void get_y_value(void){
+void get_x_value(void){
   pinMode(Y1,INPUT);
   pinMode(Y2,INPUT);
   digitalWrite(Y2,LOW);
@@ -73,10 +73,11 @@ void get_y_value(void){
   pinMode(X2,OUTPUT);
   digitalWrite(X2,LOW);
 
-  x_pos=(analogRead(Y1))/(1024/X_RESOLUTION); 
+  x_pos=(analogRead(Y1))/(1024/X_RESOLUTION);
+  
 }
 
-void get_x_value(void){
+void get_y_value(void){
   pinMode(X1,INPUT);
   pinMode(X2,INPUT);
   digitalWrite(X2,LOW);
@@ -85,7 +86,7 @@ void get_x_value(void){
   pinMode(Y2,OUTPUT);
   digitalWrite(Y2,LOW);
 
-  y_pos = (analogRead(X1))/(1024/Y_RESOLUTION);
+  y_pos =(analogRead(X1))/(1024/Y_RESOLUTION);
 }
 
 void update_screen(void){
@@ -94,8 +95,8 @@ void update_screen(void){
 }
 
 void uart_help(void){
-  UART_PORT.println("pX,T - Get touch screen data X times each T (in milliseconds)");
-  UART_PORT.println("   -Example: p10,100 (Get 10 touch screen position each 100 milliseconds");
+  UART_PORT.println("sX,T - Get touch screen data X times each T (in milliseconds)");
+  UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds");
   UART_PORT.println("aX,D - Get A0-A1 analogInput X times each T (in milliseconds)");
   UART_PORT.println("   -Example: a11,250 (Get 11 A0-A1 analog read each 250 milliseconds)");
   UART_PORT.println(" ");
