@@ -26,7 +26,12 @@ void loop(){
                     screen_pos[1]=get_y_value();
 
                     average_filter(screen_pos);
-                    UART_PORT.println("s"+String(screen_pos[0])+","+String(screen_pos[1])); 
+                    if(screen_pos[0] >= 0){
+                      UART_PORT.println("s"+String(screen_pos[0])+","+String(screen_pos[1])); 
+                    }
+                    else{
+                      UART_PORT.println("The screen doesn't detect any change");
+                    }
                     delay(Numbers[1]);
                   }
                   #ifdef SCREEN_WO_RESOLUTION

@@ -3,6 +3,8 @@
 int x_range[2],y_range[2];
 int filter_values[2][FILTER_SIZE];
 
+int counter_out = 0;
+
 void reset_range_values(void){
   x_range[0] = 1024;
   x_range[1] = 0;
@@ -60,25 +62,38 @@ int get_y_value(void){
   #endif
 }
 
-
 void average_filter(int new_val[]){
   int res[2]={0,0};
-  
-  for(int i = 0;i<(FILTER_SIZE-1);i++){
-    filter_values[0][i] = filter_values[0][i+1];
-    filter_values[1][i] = filter_values[1][i+1];  
-    res[0]+=filter_values[0][i];
-    res[1]+=filter_values[1][i];
-  }
-  
-  filter_values[0][FILTER_SIZE-1] = new_val[0];
-  filter_values[1][FILTER_SIZE-1] = new_val[1];
-  
-  res[0]+=filter_values[0][FILTER_SIZE-1];
-  res[1]+=filter_values[1][FILTER_SIZE-1];
+  int diff[2];
+  diff[0] = new_val[0]-filter_values[0][FILTER_SIZE-1];
+  diff[1] = new_val[1]-filter_values[1][FILTER_SIZE-1];
 
-  new_val[0] = res[0]/FILTER_SIZE;
-  new_val[1] = res[1]/FILTER_SIZE;
+      for(int i = 0;i<(FILTER_SIZE-1);i++){
+        filter_values[0][i] = filter_values[0][i+1];
+        filter_values[1][i] = filter_values[1][i+1];  
+        res[0]+=filter_values[0][i];
+        res[1]+=filter_values[1][i];
+      }
+  
+      filter_values[0][FILTER_SIZE-1] = new_val[0];
+      filter_values[1][FILTER_SIZE-1] = new_val[1];
+  
+      res[0]+=filter_values[0][FILTER_SIZE-1];
+      res[1]+=filter_values[1][FILTER_SIZE-1];
+
+      new_val[0] = res[0]/FILTER_SIZE;
+      new_val[1] = res[1]/FILTER_SIZE;
+      
+  if(((diff[0] < -OUT_RANGE_X)||(diff[0] > OUT_RANGE_X)) && ((diff[1] < -OUT_RANGE_Y)||(diff[1] > OUT_RANGE_Y))) counter_out = 0;
+  else{
+    counter_out++;
+    //Serial.println("Variable dentro de rango, counter = "+String(counter_out));
+    if(counter_out >= OUT_NUMBER){
+      //Serial.println("No hay cambios bruscos de posicion");
+      new_val[0]=-1;
+      new_val[1]=-1;
+    }
+  } 
 }
 
 void reset_filter(void){

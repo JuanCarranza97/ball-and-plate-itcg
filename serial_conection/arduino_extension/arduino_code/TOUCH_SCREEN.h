@@ -17,9 +17,12 @@
   #define MIN_Y_VALUE      100
   #define MAX_Y_VALUE      910  
 
-  //#define SCREEN_WO_RESOLUTION
+  //#define SCREEN_WO_RESOLUTION  
 
   #define FILTER_SIZE       10
+  #define OUT_NUMBER         4
+  #define OUT_RANGE_X       50
+  #define OUT_RANGE_Y       25
 
   void reset_range_values(void);
   int get_x_value(void);
