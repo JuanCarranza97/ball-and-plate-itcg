@@ -1,18 +1,9 @@
 #include "UART.h"
-
-//Arduino connections
-#define X1    A0
-#define X2    A1
-#define Y1    A2
-#define Y2    A3
-
-//Touch Screen Settings
-#define X_RESOLUTION   100 
-#define Y_RESOLUTION   100
-int x_pos,y_pos;
+#include "TOUCH_SCREEN.h"
 
 void setup(){
   uart_init();
+  reset_filter();
 }
 
 void loop(){
@@ -23,17 +14,29 @@ void loop(){
 
         if(uart_get(&caracter,&bufferSize,Numbers)){
           switch (caracter){
-            case 'P'://Raspberry request screen position
-              if(bufferSize == 2){
-                for(int i = 0;i<Numbers[0];i++){
-                  update_screen();
-                  UART_PORT.println("P"+String(x_pos)+","+String(y_pos)); 
-                  delay(Numbers[1]);
-                }      
-              }
-              else{
-                UART_PORT.println("Buffer length doesn't match");        
-              }
+            case 's'://Raspberry request screen position
+              #ifdef SCREEN_WO_RESOLUTION
+                reset_range_values();
+              #endif
+              int screen_pos[2];
+              
+                if(bufferSize == 2){
+                  for(int i = 0;i<Numbers[0];i++){
+                    screen_pos[0]=get_x_value();
+                    screen_pos[1]=get_y_value();
+
+                    average_filter(screen_pos);
+                    UART_PORT.println("s"+String(screen_pos[0])+","+String(screen_pos[1])); 
+                    delay(Numbers[1]);
+                  }
+                  #ifdef SCREEN_WO_RESOLUTION
+                    UART_PORT.println("x_min = "+String(x_range[0])+" ,x_max = "+String(x_range[1]));    
+                    UART_PORT.println("y_min = "+String(y_range[0])+" ,y_max = "+String(y_range[1]));   
+                  #endif
+                }
+                else{
+                  UART_PORT.println("Buffer length doesn't match");        
+                }
               break;
 
             case 'a':
@@ -49,7 +52,7 @@ void loop(){
                 UART_PORT.println("Buffer length doesn't match");        
               }            
               break;
-
+              
              default:
               UART_PORT.println("Action was not defined");
               uart_help();
@@ -61,36 +64,6 @@ void loop(){
           uart_help();
         }
   }
-}
-
-void get_x_value(void){
-  pinMode(Y1,INPUT);
-  pinMode(Y2,INPUT);
-  digitalWrite(Y2,LOW);
-  
-  pinMode(X1,OUTPUT);
-  digitalWrite(X1,HIGH);
-  pinMode(X2,OUTPUT);
-  digitalWrite(X2,LOW);
-
-  x_pos=(analogRead(Y1))/(1024/X_RESOLUTION); 
-}
-
-void get_y_value(void){
-  pinMode(X1,INPUT);
-  pinMode(X2,INPUT);
-  digitalWrite(X2,LOW);
-  pinMode(Y1,OUTPUT);
-  digitalWrite(Y1,HIGH);
-  pinMode(Y2,OUTPUT);
-  digitalWrite(Y2,LOW);
-
-  y_pos = (analogRead(X1))/(1024/Y_RESOLUTION);
-}
-
-void update_screen(void){
-  get_x_value();
-  get_y_value();
 }
 
 void uart_help(void){
