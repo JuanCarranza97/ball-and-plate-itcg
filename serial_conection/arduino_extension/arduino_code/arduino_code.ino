@@ -43,6 +43,25 @@ void loop(){
                   UART_PORT.println("Buffer length doesn't match");        
                 }
               break;
+              
+              case 'w'://Raspberry request screen position
+              #ifdef SCREEN_WO_RESOLUTION
+                reset_range_values();
+              #endif
+              int screen_pos[2];
+              
+                if(bufferSize == 2){
+                  for(int i = 0;i<Numbers[0];i++){
+                    screen_pos[0]=get_x_value();
+                    screen_pos[1]=get_y_value();
+                    UART_PORT.println("s"+String(screen_pos[0])+","+String(screen_pos[1]));                   
+                    delay(Numbers[1]);
+                  }
+                }
+                else{
+                  UART_PORT.println("Buffer length doesn't match");        
+                }
+              break;
 
             case 'a':
               if(bufferSize == 2){
@@ -72,7 +91,9 @@ void loop(){
 }
 
 void uart_help(void){
-  UART_PORT.println("sX,T - Get touch screen data X times each T (in milliseconds)");
+  UART_PORT.println("sX,T - Get touch screen data X times each T (in milliseconds) with filter and counterout");
+  UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds");
+  UART_PORT.println("wX,T - Get touch screen data X times each T (in milliseconds) withouth filter and counterout");
   UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds");
   UART_PORT.println("aX,D - Get A0-A1 analogInput X times each T (in milliseconds)");
   UART_PORT.println("   -Example: a11,250 (Get 11 A0-A1 analog read each 250 milliseconds)");
