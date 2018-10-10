@@ -92,9 +92,9 @@ void loop(){
 
 void uart_help(void){
   UART_PORT.println("sX,T - Get touch screen data X times each T (in milliseconds) with filter and counterout");
-  UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds");
-  UART_PORT.println("wX,T - Get touch screen data X times each T (in milliseconds) withouth filter and counterout");
-  UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds");
+  UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds)");
+  UART_PORT.println("wX,T - Get touch screen data X times each T (in milliseconds) without filter and counterout");
+  UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds)");
   UART_PORT.println("aX,D - Get A0-A1 analogInput X times each T (in milliseconds)");
   UART_PORT.println("   -Example: a11,250 (Get 11 A0-A1 analog read each 250 milliseconds)");
   UART_PORT.println(" ");
