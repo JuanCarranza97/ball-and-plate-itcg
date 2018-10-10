@@ -11,14 +11,14 @@ void loop(){
       char caracter;
       int Numbers[20];
       int bufferSize=0;
-
+      int screen_pos[2];
+    
         if(uart_get(&caracter,&bufferSize,Numbers)){
           switch (caracter){
             case 's'://Raspberry request screen position
               #ifdef SCREEN_WO_RESOLUTION
                 reset_range_values();
               #endif
-              int screen_pos[2];
               
                 if(bufferSize == 2){
                   for(int i = 0;i<Numbers[0];i++){
@@ -48,7 +48,6 @@ void loop(){
               #ifdef SCREEN_WO_RESOLUTION
                 reset_range_values();
               #endif
-              int screen_pos[2];
               
                 if(bufferSize == 2){
                   for(int i = 0;i<Numbers[0];i++){
