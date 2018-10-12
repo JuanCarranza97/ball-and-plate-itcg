@@ -6,7 +6,7 @@ import serial,re
 
 UPDATE_TIME = .1
 
-arduino = serial.Serial('COM14',115200)
+arduino = serial.Serial('/dev/ttyACM0',115200)
 state = "waiting"
 
 def serial_irq():   #This function is request each .25 seconds
@@ -20,8 +20,8 @@ def serial_irq():   #This function is request each .25 seconds
 
 def update_screen(pos_):
     wall_paper = cv2.imread('itcg_image.jpg')
-    cv2.putText(wall_paper,"Posicion",(90,130),cv2.FONT_ITALIC,1,(255,0,0),1,cv2.LINE_AA)
-    cv2.putText(wall_paper,"x={:4} y={:4}".format(pos_[0],pos_[1]),(51,170),cv2.FONT_ITALIC,.65,(255,0,0),1,cv2.LINE_AA)
+    cv2.putText(wall_paper,"Posicion",(90,130),cv2.FONT_ITALIC,1,(255,0,0),1)
+    cv2.putText(wall_paper,"x={:4} y={:4}".format(pos_[0],pos_[1]),(51,170),cv2.FONT_ITALIC,.65,(255,0,0),1)
 
     cv2.imshow('Ball and Plate ITCG',wall_paper)
 
@@ -53,8 +53,8 @@ while state != "break":
                     #Updating position values
                     if pos[0] == '1500':
                         wall_paper = cv2.imread('itcg_image.jpg')
-                        cv2.putText(wall_paper,"Posicion",(90,130),cv2.FONT_ITALIC,1,(255,0,0),1,cv2.LINE_AA)
-                        cv2.putText(wall_paper,"NULL",(125,170),cv2.FONT_ITALIC,.6,(255,0,0),1,cv2.LINE_AA)
+                        cv2.putText(wall_paper,"Posicion",(90,130),cv2.FONT_ITALIC,1,(255,0,0),1)
+                        cv2.putText(wall_paper,"NULL",(125,170),cv2.FONT_ITALIC,.6,(255,0,0),1)
 
                         cv2.imshow('Ball and Plate ITCG',wall_paper)
                     else:
