@@ -15,7 +15,7 @@ void loop(){
     
         if(uart_get(&caracter,&bufferSize,Numbers)){
           switch (caracter){
-            case 's'://Raspberry request screen position
+            case 'f'://Raspberry request screen position
               #ifdef SCREEN_WO_RESOLUTION
                 reset_range_values();
               #endif
@@ -27,10 +27,10 @@ void loop(){
 
                     average_filter(screen_pos);
                     if(screen_pos[0] >= 0){
-                      UART_PORT.println("s"+String(screen_pos[0])+","+String(screen_pos[1])); 
+                      UART_PORT.println("p"+String(screen_pos[0])+","+String(screen_pos[1])); 
                     }
                     else{
-                      UART_PORT.println("The screen doesn't detect any change");
+                      UART_PORT.println("p"+String(1500)+","+String(1500));
                     }
                     delay(Numbers[1]);
                   }
@@ -45,6 +45,7 @@ void loop(){
               break;
               
               case 'w'://Raspberry request screen position
+              reset_filter();
               #ifdef SCREEN_WO_RESOLUTION
                 reset_range_values();
               #endif
@@ -53,7 +54,7 @@ void loop(){
                   for(int i = 0;i<Numbers[0];i++){
                     screen_pos[0]=get_x_value();
                     screen_pos[1]=get_y_value();
-                    UART_PORT.println("s"+String(screen_pos[0])+","+String(screen_pos[1]));                   
+                    UART_PORT.println("p"+String(screen_pos[0])+","+String(screen_pos[1]));                   
                     delay(Numbers[1]);
                   }
                 }
@@ -75,7 +76,10 @@ void loop(){
                 UART_PORT.println("Buffer length doesn't match");        
               }            
               break;
-              
+
+             case 's':
+                    reset_filter();
+                    break;
              default:
               UART_PORT.println("Action was not defined");
               uart_help();
@@ -90,8 +94,8 @@ void loop(){
 }
 
 void uart_help(void){
-  UART_PORT.println("sX,T - Get touch screen data X times each T (in milliseconds) with filter and counterout");
-  UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds)");
+  UART_PORT.println("fX,T - Get touch screen data X times each T (in milliseconds) with filter and counterout");
+  UART_PORT.println("   -Example: f10,100 (Get 10 touch screen position each 100 milliseconds)");
   UART_PORT.println("wX,T - Get touch screen data X times each T (in milliseconds) without filter and counterout");
   UART_PORT.println("   -Example: s10,100 (Get 10 touch screen position each 100 milliseconds)");
   UART_PORT.println("aX,D - Get A0-A1 analogInput X times each T (in milliseconds)");

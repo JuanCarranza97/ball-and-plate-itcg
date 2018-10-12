@@ -97,6 +97,7 @@ void average_filter(int new_val[]){
 }
 
 void reset_filter(void){
+  counter_out = 0;
   for(int i = 0;i<FILTER_SIZE;i++){
     filter_values[0][i]=0;
     filter_values[1][i]=0;

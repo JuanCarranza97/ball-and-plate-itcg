@@ -7,14 +7,14 @@ arduino = serial.Serial('/dev/ttyACM0',115200)
 #    def __init__(self,char,function,help_string):
 #        self.char = char
 #        self.callback = function
-#        self.help_string = help_string
+#        self.help_string =  help_string
 #
 #def get_screen():
 #    pass
 #
 #serial_actions=[]
 #serial_actions.append(serial_action('d',get_screen,"Get the x,y position"))
-        
+
 
 def serial_monitor(port):
     try:
@@ -22,16 +22,16 @@ def serial_monitor(port):
         serial_input = serial_input[:-2] #Remove \n of expression
 
         matcher = re.compile(r'[A-Za-z][0-9]+([,][0-9]+)*$')
-        
+
         if matcher.match(serial_input):
             char = serial_input[0]
             digits = serial_input[1:]
-            
+
             if digits.find(','):
                 digits = digits.split(',')
         else:
             print("Expression doesn't match")
-        
+
         print ("Your char was {}, The numbers were: {}".format(char,digits))
 
         if char == 'b':
@@ -39,9 +39,9 @@ def serial_monitor(port):
             return False
 
         return True
-    
+
     except:
-        return True 
+        return True
 
 def test_monitor():
     while True:
@@ -58,4 +58,4 @@ while True:
     elif answer == "2":
         break;
     else:
-        print("No vlaid command")
+        print("No valid command")
