@@ -1,6 +1,8 @@
 #include "UART.h"
 #include "TOUCH_SCREEN.h"
 
+extern int x_range[2],y_range[2];
+extern int counter_out;
 void setup(){
   uart_init();
   reset_filter();
@@ -46,6 +48,7 @@ void loop(){
               
               case 'w'://Raspberry request screen position
               reset_filter();
+              counter_out=0;
               #ifdef SCREEN_WO_RESOLUTION
                 reset_range_values();
               #endif
@@ -57,6 +60,10 @@ void loop(){
                     UART_PORT.println("p"+String(screen_pos[0])+","+String(screen_pos[1]));                   
                     delay(Numbers[1]);
                   }
+                  #ifdef SCREEN_WO_RESOLUTION
+                    UART_PORT.println("x_min = "+String(x_range[0])+" ,x_max = "+String(x_range[1]));    
+                    UART_PORT.println("y_min = "+String(y_range[0])+" ,y_max = "+String(y_range[1]));   
+                  #endif
                 }
                 else{
                   UART_PORT.println("Buffer length doesn't match");        
@@ -78,7 +85,9 @@ void loop(){
               break;
 
              case 's':
+                    counter_out=0;
                     reset_filter();
+                    
                     break;
              default:
               UART_PORT.println("Action was not defined");

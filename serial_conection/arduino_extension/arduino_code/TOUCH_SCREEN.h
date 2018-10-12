@@ -19,10 +19,10 @@
 
   //#define SCREEN_WO_RESOLUTION  
 
-  #define FILTER_SIZE       10
-  #define OUT_NUMBER         4
+  #define FILTER_SIZE       40
+  #define OUT_NUMBER        80
   #define OUT_RANGE_X       50
-  #define OUT_RANGE_Y       25
+  #define OUT_RANGE_Y       50
 
   void reset_range_values(void);
   int get_x_value(void);

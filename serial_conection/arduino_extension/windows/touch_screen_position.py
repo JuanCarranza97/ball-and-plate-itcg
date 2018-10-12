@@ -4,9 +4,9 @@ from time import sleep
 from threading import Timer
 import serial,re
 
-UPDATE_TIME = .1
+UPDATE_TIME = .025
 
-arduino = serial.Serial('COM14',115200)
+arduino = serial.Serial('COM22',115200)
 state = "waiting"
 
 def serial_irq():   #This function is request each .25 seconds
