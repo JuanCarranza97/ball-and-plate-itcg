@@ -60,6 +60,7 @@ int get_y_value(void){
     y_pos = y_pos < 0?0:y_pos;
     y_pos = y_pos > Y_RESOLUTION?Y_RESOLUTION:y_pos;
   #endif
+  return y_pos;
 }
 
 void average_filter(int new_val[]){
