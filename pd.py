@@ -20,11 +20,11 @@ ser1 = servo.Servo(pca.channels[0], min_pulse=700, max_pulse=2720) #Servomotor M
 ser2 = servo.Servo(pca.channels[1], min_pulse=790, max_pulse=2970) #Servomotor SG90
 
 while True:
-	for i in range(0,180,10):	#Va desde 0° hasta 180° con incrementos de 10°
+	for i in range(0,180,1):	#Va desde 0° hasta 180° con incrementos de 10°
 		ser1.angle = i			#Servo MG
 		ser2.angle = 180 - i	#Servo SG en sentido contraio al MG
 		t.sleep(0.2)			#Tiempo de retardo
-	for i in range(0,180,10):	#Va desde 180° hasta 0° con decrementos de 10°
+	for i in range(0,180,1):	#Va desde 180° hasta 0° con decrementos de 10°
 		ser1.angle = 180 - i
 		ser2.angle = i
 		t.sleep(0.2)
