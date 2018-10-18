@@ -1,13 +1,25 @@
 import numpy as np
-import cv2
 from time import sleep
 from threading import Timer
-import serial,re
+import serial,re,sys,cv2
 
-UPDATE_TIME = .025
+if __name__ == '__main__':
+    if len(sys.argv) == 2:
+        port = sys.argv[1]
+    else:
+        if len(sys.argv) == 0:
+            print("You should enter serial port")
+        else:
+            print("Only one parameter is allowed")
+        exit(1)
 
-arduino = serial.Serial('COM22',115200)
-state = "waiting"
+try:
+    UPDATE_TIME = .025
+    arduino = serial.Serial(port,115200)
+    state = "waiting"
+except:
+    print("The entered serial port is not correctly or available")
+    exit(1)
 
 def serial_irq():   #This function is request each .25 seconds
     if state != "break":
@@ -20,8 +32,9 @@ def serial_irq():   #This function is request each .25 seconds
 
 def update_screen(pos_):
     wall_paper = cv2.imread('itcg_image.jpg')
-    cv2.putText(wall_paper,"Posicion",(90,130),cv2.FONT_ITALIC,1,(255,0,0),1,cv2.LINE_AA)
-    cv2.putText(wall_paper,"x={:4} y={:4}".format(pos_[0],pos_[1]),(51,170),cv2.FONT_ITALIC,.65,(255,0,0),1,cv2.LINE_AA)
+
+    cv2.putText(wall_paper,"Posicion",(90,130),cv2.FONT_ITALIC,1,(255,0,0),1)
+    cv2.putText(wall_paper,"x={:4} y={:4}".format(pos_[0],pos_[1]),(50,170),cv2.FONT_ITALIC,.65,(255,0,0),1)
 
     cv2.imshow('Ball and Plate ITCG',wall_paper)
 
@@ -29,7 +42,6 @@ t = Timer(UPDATE_TIME, serial_irq)
 t.start()
 
 update_screen(['----','----'])
-
 
 while state != "break":
     try:
@@ -39,7 +51,7 @@ while state != "break":
             message = serial_input
             serial_input = serial_input[:-2] #Remove \n of expression
 
-            matcher = re.compile(r'[A-Za-z][0-9]+([,][0-9]+)*$')
+            matcher = re.compile(r'[A-Za-z][-]?[0-9]+([,][-]?[0-9]+)*$')
             #Verify the input
             if matcher.match(serial_input):
                 char = serial_input[0]
@@ -53,8 +65,8 @@ while state != "break":
                     #Updating position values
                     if pos[0] == '1500':
                         wall_paper = cv2.imread('itcg_image.jpg')
-                        cv2.putText(wall_paper,"Posicion",(90,130),cv2.FONT_ITALIC,1,(255,0,0),1,cv2.LINE_AA)
-                        cv2.putText(wall_paper,"NULL",(125,170),cv2.FONT_ITALIC,.6,(255,0,0),1,cv2.LINE_AA)
+                        cv2.putText(wall_paper,"Posicion",(90,130),cv2.FONT_ITALIC,1,(255,0,0),1)
+                        cv2.putText(wall_paper,"NULL",(125,170),cv2.FONT_ITALIC,.6,(255,0,0),1)
 
                         cv2.imshow('Ball and Plate ITCG',wall_paper)
                     else:

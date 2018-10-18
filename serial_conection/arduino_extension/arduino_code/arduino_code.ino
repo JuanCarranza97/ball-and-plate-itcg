@@ -28,12 +28,9 @@ void loop(){
                     screen_pos[1]=get_y_value();
 
                     average_filter(screen_pos);
-                    if(screen_pos[0] >= 0){
-                      UART_PORT.println("p"+String(screen_pos[0])+","+String(screen_pos[1])); 
-                    }
-                    else{
-                      UART_PORT.println("p"+String(1500)+","+String(1500));
-                    }
+                    if(screen_pos[0] >= 0)    UART_PORT.println("p"+String(screen_pos[0])+","+String(screen_pos[1])); 
+                    else                      UART_PORT.println("p-1,-1"); 
+                    
                     delay(Numbers[1]);
                   }
                   #ifdef SCREEN_WO_RESOLUTION
