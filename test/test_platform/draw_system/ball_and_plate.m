@@ -2,6 +2,10 @@
 base_radius=10;
 base_number = 6;
 
+plate_radius=5;
+scrap_length = 2;
+plate_height=12;
+
 length = [5];
 
 alpha=[30;
@@ -15,8 +19,8 @@ theta=[150;
    
    
 draw_axis(15);
-[positions]=draw_polygon(base_radius,base_number,0);
-
+[positions]=draw_polygon(base_radius,base_number,'-.r');
+[clock_point,anti_clock_point]=draw_plate(plate_radius,scrap_length,plate_height,'-.b');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %        Alpha and Theta Matrix
 %   PLANE_1   [DOF_1   DOF_2   DOF_3]
@@ -46,5 +50,10 @@ end
  
  plot3([positions(1,4) right_servo(3,1)],[positions(2,4) right_servo(3,2)],[positions(3,4) right_servo(3,3)],'c');
  plot3([positions(1,3) left_servo(3,1)],[positions(2,3) left_servo(3,2)],[positions(3,3) left_servo(3,3)],'m');
-
-
+ %%%%%%%%%%%%Dibuja longitudes del tie rod
+ 
+ for i=1:3
+    plot3([right_servo(i,1) anti_clock_point(i,1)],[right_servo(i,2) anti_clock_point(i,2)],[right_servo(i,3) anti_clock_point(i,3)],'--c');
+    plot3([left_servo(i,1)  clock_point(i,1)],[left_servo(i,2) clock_point(i,2)],[left_servo(i,3) clock_point(i,3)],'--m');
+ end
+ %plot3([positions(1,5) left_servo(1,1)],[positions(2,5) left_servo(1,2)],[positions(3,5) left_servo(1,3)],':m');
