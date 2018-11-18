@@ -86,3 +86,31 @@ def plate_points(centroid_dist,scrap,euler_angles,translation):
         #print("clock = {}".format(clock))
         points.append(clock)
     return points
+
+def points_to_xyz(points):
+    x = []
+    y = []
+    z = []
+    for i in points:
+        x.append(i[0])
+        y.append(i[1])
+        z.append(i[2])
+    return x,y,z
+
+def draw_base(points,ax,fig):
+    x,y,z = points_to_xyz(points)
+    
+    x.append(x[0])
+    y.append(y[0])
+    z.append(z[0])
+    
+    ax.plot3D(x,y,z)
+    fig.canvas.draw()
+    
+def draw_axis(axis_x,axis_y,axis_z,ax,fig):
+    x = [-axis_x,axis_x]
+    y = [0,0]
+    z = [0,0]
+    ax.plot3D(x,y,z,'r')
+    fig.canvas.draw()
+    
