@@ -108,9 +108,29 @@ def draw_base(points,ax,fig):
     fig.canvas.draw()
     
 def draw_axis(axis_x,axis_y,axis_z,ax,fig):
-    x = [-axis_x,axis_x]
+    x = [-axis_x,0]
+    y = [0,0]
+    z = [0,0]
+    ax.plot3D(x,y,z,'--r')
+    fig.canvas.draw()
+    x = [0,axis_x]
     y = [0,0]
     z = [0,0]
     ax.plot3D(x,y,z,'r')
+    fig.canvas.draw()
+    x = [0,0]
+    y = [-axis_y,0]
+    z = [0,0]
+    ax.plot3D(x,y,z,'--b')
+    fig.canvas.draw()
+    x = [0,0]
+    y = [0,axis_y]
+    z = [0,0]
+    ax.plot3D(x,y,z,'b')
+    fig.canvas.draw()
+    x = [0,0]
+    y = [0,0]
+    z = [0,axis_z]
+    ax.plot3D(x,y,z,'g')
     fig.canvas.draw()
     
