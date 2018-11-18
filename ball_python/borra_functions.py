@@ -74,15 +74,17 @@ def plate_points(centroid_dist,scrap,euler_angles,translation):
     point = [0,-centroid_dist,0]
 
     points=[]
-    rot_angles = [0,-120,-140]
+    rot_angles = [0,-120,-240]
 
     for side_angle in rot_angles:
         anticlock = position_translate(point,[-(scrap/2),-scrap,0]).tolist()[0]
         anticlock = position_rotate(anticlock,[euler_angles[0]+side_angle,euler_angles[1],euler_angles[2]]).tolist()[0]
+        anticlock = position_translate(anticlock,translation).tolist()[0]
         #print("anticlock = {}".format(anticlock))
         points.append(anticlock)
         clock = position_translate(point,[(scrap/2),-scrap,0]).tolist()[0]
         clock = position_rotate(clock,[euler_angles[0]+side_angle,euler_angles[1],euler_angles[2]]).tolist()[0]
+        clock = position_translate(clock,translation).tolist()[0]
         #print("clock = {}".format(clock))
         points.append(clock)
     return points
@@ -97,17 +99,21 @@ def points_to_xyz(points):
         z.append(i[2])
     return x,y,z
 
-def draw_base(points,ax,fig):
+def draw_by_points(points,ax,fig,color):
     x,y,z = points_to_xyz(points)
     
     x.append(x[0])
     y.append(y[0])
     z.append(z[0])
     
-    ax.plot3D(x,y,z)
+    ax.plot3D(x,y,z,c=color)
     fig.canvas.draw()
     
 def draw_axis(axis_x,axis_y,axis_z,ax,fig):
+    ax.set_xlim(-axis_x,axis_x)
+    ax.set_ylim(-axis_y,axis_y)
+    ax.set_zlim(0,axis_z)
+
     x = [-axis_x,0]
     y = [0,0]
     z = [0,0]
