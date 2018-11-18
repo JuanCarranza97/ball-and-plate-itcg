@@ -19,6 +19,7 @@ def position_translate(position,delta):
     new_pos = position*translation_matrix
     new_pos = new_pos[0,:-1]
     #new_pos = np.asarray(new_pos)
+    position.pop()
     return new_pos
 
 def position_rotate(position,angles):
@@ -61,3 +62,27 @@ def get_servo_angle(position,links_length,base):
     theta1[0] = math.degrees(theta1[0])
     theta1[1] = math.degrees(theta1[1])
     return theta1
+
+def base_points(radio):
+    points =[]
+    for angle in [240,300,0,60,120,180]:
+        points.append([radio*math.cos(math.radians(angle)),radio*math.sin(math.radians(angle)),0])
+    return points
+
+def plate_points(centroid_dist,scrap,euler_angles,translation):
+    #Make the point for the translation
+    point = [0,-centroid_dist,0]
+
+    points=[]
+    rot_angles = [0,-120,-140]
+
+    for side_angle in rot_angles:
+        anticlock = position_translate(point,[-(scrap/2),-scrap,0]).tolist()[0]
+        anticlock = position_rotate(anticlock,[euler_angles[0]+side_angle,euler_angles[1],euler_angles[2]]).tolist()[0]
+        #print("anticlock = {}".format(anticlock))
+        points.append(anticlock)
+        clock = position_translate(point,[(scrap/2),-scrap,0]).tolist()[0]
+        clock = position_rotate(clock,[euler_angles[0]+side_angle,euler_angles[1],euler_angles[2]]).tolist()[0]
+        #print("clock = {}".format(clock))
+        points.append(clock)
+    return points
