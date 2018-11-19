@@ -6,7 +6,7 @@ plate_radius=5;
 scrap_length = 2;
 plate_height=12;
 
-servo_length = [5];
+length = [5];
 
 alpha=[30;
        30;
@@ -35,9 +35,9 @@ left_servo=[];
 plane_angles = [0 -120 -240];
 for plane=1:3
     rot_matrix = [cosd(plane_angles(plane)) -sind(plane_angles(plane)) 0;sind(plane_angles(plane)) cosd(plane_angles(plane)) 0;0 0 1];
-    right_servo(plane,:) = [positions(1,6)+servo_length(1)*cosd(alpha(plane,1)) positions(2,6) positions(3,6)+servo_length(1)*sind(alpha(plane,1))];
+    right_servo(plane,:) = [positions(1,6)+length(1)*cosd(alpha(plane,1)) positions(2,6) positions(3,6)+length(1)*sind(alpha(plane,1))];
     right_servo(plane,:) = right_servo(plane,:)*rot_matrix;
-    left_servo(plane,:)  = [positions(1,5)+servo_length(1)*cosd(theta(plane,1)) positions(2,5) positions(3,5)+servo_length(1)*sind(theta(plane,1))];
+    left_servo(plane,:)  = [positions(1,5)+length(1)*cosd(theta(plane,1)) positions(2,5) positions(3,5)+length(1)*sind(theta(plane,1))];
     left_servo(plane,:) = left_servo(plane,:)*rot_matrix;
 end
 %%Right servos are 6,4 and 2
