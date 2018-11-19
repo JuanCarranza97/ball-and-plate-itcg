@@ -48,7 +48,8 @@ def get_servo_angle(position,links_length,base):
         print("You should put only two links_length")
     if len(position) != 3 or len(base) != 3:
         print("This function is only available for 3 DOF with 2 links_length")
-
+    theta2 = []
+    theta1 = []
     position = position_translate(position,[-base[0],-base[1],-base[2]]).tolist()[0]
     help_link = math.sqrt(math.pow(links_length[1],2)-math.pow(position[1],2))
 
@@ -61,7 +62,7 @@ def get_servo_angle(position,links_length,base):
     theta1.append(math.atan(float(position[2])/float(position[0]))-math.atan((help_link*sentheta2[1])/(links_length[0]+help_link*costheta2)))
     theta1[0] = math.degrees(theta1[0])
     theta1[1] = math.degrees(theta1[1])
-    return theta1
+    return theta1,theta2
 
 def base_points(radio):
     points =[]
@@ -74,15 +75,99 @@ def plate_points(centroid_dist,scrap,euler_angles,translation):
     point = [0,-centroid_dist,0]
 
     points=[]
-    rot_angles = [0,-120,-140]
+    rot_angles = [0,-120,-240]
 
     for side_angle in rot_angles:
         anticlock = position_translate(point,[-(scrap/2),-scrap,0]).tolist()[0]
-        anticlock = position_rotate(anticlock,[euler_angles[0]+side_angle,euler_angles[1],euler_angles[2]]).tolist()[0]
+        anticlock = position_rotate(anticlock,[side_angle,0,0]).tolist()[0]
+        anticlock = position_rotate(anticlock,[euler_angles[0],euler_angles[1],euler_angles[2]]).tolist()[0]
+        anticlock = position_translate(anticlock,translation).tolist()[0]
         #print("anticlock = {}".format(anticlock))
         points.append(anticlock)
         clock = position_translate(point,[(scrap/2),-scrap,0]).tolist()[0]
-        clock = position_rotate(clock,[euler_angles[0]+side_angle,euler_angles[1],euler_angles[2]]).tolist()[0]
+        clock = position_rotate(clock,[side_angle,0,0]).tolist()[0]
+        clock = position_rotate(clock,[euler_angles[0],euler_angles[1],euler_angles[2]]).tolist()[0]
+        clock = position_translate(clock,translation).tolist()[0]
         #print("clock = {}".format(clock))
         points.append(clock)
     return points
+
+def points_to_xyz(points):
+    x = []
+    y = []
+    z = []
+    for i in points:
+        x.append(i[0])
+        y.append(i[1])
+        z.append(i[2])
+    return x,y,z
+
+def draw_by_points(points,ax,fig,color):
+    x,y,z = points_to_xyz(points)
+    
+    x.append(x[0])
+    y.append(y[0])
+    z.append(z[0])
+    
+    ax.plot3D(x,y,z,c=color)
+    fig.canvas.draw()
+    
+def draw_axis(axis_x,axis_y,axis_z,ax,fig):
+    ax.set_xlim(-axis_x,axis_x)
+    ax.set_ylim(-axis_y,axis_y)
+    ax.set_zlim(0,axis_z)
+
+    x = [-axis_x,0]
+    y = [0,0]
+    z = [0,0]
+    ax.plot3D(x,y,z,'--r')
+    fig.canvas.draw()
+    x = [0,axis_x]
+    y = [0,0]
+    z = [0,0]
+    ax.plot3D(x,y,z,'r')
+    fig.canvas.draw()
+    x = [0,0]
+    y = [-axis_y,0]
+    z = [0,0]
+    ax.plot3D(x,y,z,'--b')
+    fig.canvas.draw()
+    x = [0,0]
+    y = [0,axis_y]
+    z = [0,0]
+    ax.plot3D(x,y,z,'b')
+    fig.canvas.draw()
+    x = [0,0]
+    y = [0,0]
+    z = [0,axis_z]
+    ax.plot3D(x,y,z,'g')
+    fig.canvas.draw()
+
+def draw_servo(base_points,servos_length,angles,ax,fig):
+    servo_points=[]
+    rot_angle = [0,120,240]
+    
+    point = 0
+    end_servo = [0,0]
+    for side_angle in rot_angle:
+        rotated_point = position_rotate(base_points[point],[side_angle,0,0]).tolist()[0] 
+        end_servo = [rotated_point[0]+servos_length*math.cos(math.radians(angles[point])),rotated_point[1],rotated_point[2]+servos_length*math.sin(math.radians(angles[point]))]
+        end_servo = position_rotate(end_servo,[-side_angle,0,0,]).tolist()[0]
+        servo_points.append(end_servo)
+        
+        point+=1
+        rotated_point = position_rotate(base_points[point],[side_angle,0,0]).tolist()[0] 
+        end_servo = [rotated_point[0]+servos_length*math.cos(math.radians(angles[point])),rotated_point[1],rotated_point[2]+servos_length*math.sin(math.radians(angles[point]))]
+        end_servo = position_rotate(end_servo,[-side_angle,0,0]).tolist()[0]
+        servo_points.append(end_servo)
+        point+=1
+    
+    for i in range(6):
+        ax.plot3D([base_points[i][0],servo_points[i][0]],[base_points[i][1],servo_points[i][1]],[base_points[i][2],servo_points[i][2]],c='k')
+        fig.canvas.draw()
+    return servo_points
+
+#def get_servo_angles(plate_p,base_p,links_length):
+    
+
+    
