@@ -43,30 +43,86 @@ def position_rotate(position,angles):
     rot_yaw   = np.matrix([[math.cos(angles[0]),-math.sin(angles[0]),0],[math.sin(angles[0]),math.cos(angles[0]),0],[0,0,1]])
     return mat_point*rot_roll*rot_pitch*rot_yaw
 
-def get_servo_angle(position,links_length,base):
+def get_servo_angle(position_input,links_length,base_input):
     if len(links_length) != 2:
         print("You should put only two links_length")
-    if len(position) != 3 or len(base) != 3:
+    if len(position_input[0]) != 3 or len(base_input[0]) != 3:
         print("This function is only available for 3 DOF with 2 links_length")
-    theta2 = []
-    theta1 = []
-    position = position_translate(position,[-base[0],-base[1],-base[2]]).tolist()[0]
-    help_link = math.sqrt(math.pow(links_length[1],2)-math.pow(position[1],2))
-
-    costheta2 = (math.pow(position[0],2)+math.pow(position[2],2)-math.pow(links_length[0],2)-math.pow(help_link,2))/(2*links_length[0]*help_link)
-
-    sentheta2 = [math.sqrt(1 - math.pow(costheta2,2)),-math.sqrt(1 - math.pow(costheta2,2))]
-    theta2 = [math.degrees(math.atan(sentheta2[0]/costheta2)),math.degrees(math.atan(sentheta2[1]/costheta2))]
-
-    theta1 = [math.atan(float(position[2])/float(position[0]))-math.atan((help_link*sentheta2[0])/(links_length[0]+help_link*costheta2))]
-    theta1.append(math.atan(float(position[2])/float(position[0]))-math.atan((help_link*sentheta2[1])/(links_length[0]+help_link*costheta2)))
-    theta1[0] = math.degrees(theta1[0])
-    theta1[1] = math.degrees(theta1[1])
     
-    if position[0] < 0:
-        print("Valor negativo")
-        theta1[0] = theta1[0]+180
-        theta1[1] = theta1[1]+180
+    theta1=[]
+    theta2=[]
+    
+    current_point=0
+    side_angles = [0,120,240]
+    
+    for current_angle in side_angles:
+        print("--- Point {}---".format(current_point))
+        print("Angle = {}".format(current_angle))
+        position = position_rotate(position_input[current_point],[current_angle,0,0]).tolist()[0]
+        base = position_rotate(base_input[current_point],[current_angle,0,0]).tolist()[0]
+        
+        print("Plate {}".format(position))
+        print("Base {}".format(base))
+        print("Before translate {}".format(position))
+        position = position_translate(position,[-base[0],-base[1],-base[2]]).tolist()[0]
+        print("After translate {}".format(position))
+        
+        help_link = math.sqrt(math.pow(links_length[1],2)-math.pow(position[1],2))
+
+        costheta2 = (math.pow(position[0],2)+math.pow(position[2],2)-math.pow(links_length[0],2)-math.pow(help_link,2))/(2*links_length[0]*help_link)
+
+        sentheta2 = [math.sqrt(1 - math.pow(costheta2,2)),-math.sqrt(1 - math.pow(costheta2,2))]
+        
+        theta2_c = []
+        theta1_c = []
+        
+        theta2_c = [math.degrees(math.atan(sentheta2[0]/costheta2)),math.degrees(math.atan(sentheta2[1]/costheta2))]
+
+        theta1_c = [math.atan(float(position[2])/float(position[0]))-math.atan((help_link*sentheta2[0])/(links_length[0]+help_link*costheta2))]
+        theta1_c.append(math.atan(float(position[2])/float(position[0]))-math.atan((help_link*sentheta2[1])/(links_length[0]+help_link*costheta2)))
+        theta1_c[0] = math.degrees(theta1_c[0])
+        theta1_c[1] = math.degrees(theta1_c[1])
+        
+        if position[0] < 0:
+            theta1_c[0] = theta1_c[0]+180
+            theta1_c[1] = theta1_c[1]+180
+        theta1.append(theta1_c)
+        theta2.append(theta2_c)
+        current_point+=1
+        ###antipoint
+        print("--- Point {}---".format(current_point))
+        print("Angle = {}".format(current_angle))
+        position = position_rotate(position_input[current_point],[current_angle,0,0]).tolist()[0]
+        base = position_rotate(base_input[current_point],[current_angle,0,0]).tolist()[0]
+        
+        print("Plate {}".format(position))
+        print("Base {}".format(base))
+        print("Before translate {}".format(position))
+        position = position_translate(position,[-base[0],-base[1],-base[2]]).tolist()[0]
+        print("After translate {}".format(position))
+        
+        help_link = math.sqrt(math.pow(links_length[1],2)-math.pow(position[1],2))
+
+        costheta2 = (math.pow(position[0],2)+math.pow(position[2],2)-math.pow(links_length[0],2)-math.pow(help_link,2))/(2*links_length[0]*help_link)
+
+        sentheta2 = [math.sqrt(1 - math.pow(costheta2,2)),-math.sqrt(1 - math.pow(costheta2,2))]
+        
+        theta2_c = []
+        theta1_c = []
+        
+        theta2_c = [math.degrees(math.atan(sentheta2[0]/costheta2)),math.degrees(math.atan(sentheta2[1]/costheta2))]
+
+        theta1_c = [math.atan(float(position[2])/float(position[0]))-math.atan((help_link*sentheta2[0])/(links_length[0]+help_link*costheta2))]
+        theta1_c.append(math.atan(float(position[2])/float(position[0]))-math.atan((help_link*sentheta2[1])/(links_length[0]+help_link*costheta2)))
+        theta1_c[0] = math.degrees(theta1_c[0])
+        theta1_c[1] = math.degrees(theta1_c[1])
+        
+        if position[0] < 0:
+            theta1_c[0] = theta1_c[0]+180
+            theta1_c[1] = theta1_c[1]+180
+        theta1.append(theta1_c)
+        theta2.append(theta2_c)
+        current_point+=1
         
     return theta1,theta2
 
