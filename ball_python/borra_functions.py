@@ -62,6 +62,12 @@ def get_servo_angle(position,links_length,base):
     theta1.append(math.atan(float(position[2])/float(position[0]))-math.atan((help_link*sentheta2[1])/(links_length[0]+help_link*costheta2)))
     theta1[0] = math.degrees(theta1[0])
     theta1[1] = math.degrees(theta1[1])
+    
+    if position[0] < 0:
+        print("Valor negativo")
+        theta1[0] = theta1[0]+180
+        theta1[1] = theta1[1]+180
+        
     return theta1,theta2
 
 def base_points(radio):

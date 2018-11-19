@@ -10,24 +10,31 @@ fig = plt.figure()
 ax = fig.add_subplot(111,projection='3d')
 #################################
 
-bf.draw_axis(100,100,120,ax,fig)
+bf.draw_axis(120,120,120,ax,fig)
 
 #Draw base
-base_points = bf.base_points(92)
+base_points = bf.base_points(94)
 bf.draw_by_points(base_points,ax,fig,'orangered')
 
 #Draw plate
-plate_points = bf.plate_points(72.9,6,[0,0,0],[0,0,80])
+altura = 96
+plate_points = bf.plate_points(72.9,6,[0,0,0],[0,0,altura])
 bf.draw_by_points(plate_points,ax,fig,'dodgerblue')
 
 #Draw servo
 servo_links = [58.31,61.64]
-servos_angles = [135,45,135,45,135,45]
+servos_angles = [135,0,180,0,180,0]
 
-#theta1,theta2= bf.get_servo_angle(new_plate,[58.31,61.64],[0,0,0])
+#theta1,theta2= bf.get_servo_angle(plate_points[0],[58.31,61.64],base_points[0])
 theta1,theta2= bf.get_servo_angle(plate_points[0],servo_links,base_points[0])
-print(theta1)
-print(theta2)
-servos_angles[0] = theta1[1]
+print("Altura={}".format(altura))
+print("Theta1={}".format(theta1))
+print("Theta2={}".format(theta2))
+servos_angles[0] = theta1[0]
+
+
+print(servos_angles)
 bf.draw_servo(base_points,servo_links[0],servos_angles,ax,fig)
+
+input("Presione tecla para salir\n")
 
