@@ -10,7 +10,7 @@ import importlib
 base_points = bf.base_points(92)
 
 #Draw plate
-plate_points = bf.plate_points(72.91,6,[0,0,0],[0,0,118])
+plate_points = bf.plate_points(72.91,6,[0,0,0],[0,0,108])
 #Draw servo
 servo_links = [16.46,117.22]
 
