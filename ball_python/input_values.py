@@ -1,18 +1,21 @@
 import sys
 
 mode = "offline"
+plot = False
+
 if __name__ == '__main__':
-    if len(sys.argv) == 2:
-        if sys.argv[1] == 'online':
-            mode="online"
-        elif sys.argv[1] == 'offline':
-            mode='offline'
+    input_argv = sys.argv[:]
+    input_argv.pop(0)   
+    while len(input_argv) > 0:
+        current = input_argv.pop(0)
+        
+        if current == "online":
+            mode = "online"
+        elif current == "plot":
+            print("Plot actived")
+            plot = True
         else:
-            print("No valid input")
-            exit(1)
-    elif len(sys.argv) > 2:
-        print("only one argument is valid")
-        exit(1)
+            print("Invalid Input: {} was not specified".format(current)) 
 
 print("Initializing {} ...".format(mode),end="")
 print()
@@ -67,6 +70,12 @@ base_points = bf.base_points(base_length)
 angles = [0,0,0]
 translation = [0,0,0]
 
+if plot:
+    plt.ion()
+    fig = plt.figure()
+    ax = fig.add_subplot(111,projection='3d')
+    bf.draw_axis(110,110,220,ax,fig)
+                
 print("Done B)")
 sleep(.5)
 
@@ -118,6 +127,14 @@ while True:
             else:
                 bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
             
+            if plot:
+                plt.cla()
+                bf.draw_axis(110,110,220,ax,fig)
+
+                bf.draw_by_points(base_points,ax,fig,'orangered')
+                bf.draw_by_points(plate_points,ax,fig,'dodgerblue')
+
+                bf.draw_servo(base_points,plate_points,servo_links[0],theta1,ax,fig)
           
         except ValueError:
             print("\n\x1b[1;31m"+"Error: Itsn't posible set the current position (MathDomain Error)\n")
