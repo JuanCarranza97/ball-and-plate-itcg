@@ -271,9 +271,10 @@ def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offlin
             print("It's not posible to set {} position to servo {}".format(maped_servos[i],i))
             end_correctly = False
     if end_correctly:
-        print("Aqui se pondran los valores de los servos")
+        if mode == "online":
+            for i in range(6):
+                servos[i].angles = maped_servos[i]
         
-
 def is_number_in(number,min_v,max_v):
     if number in range(min_v,max_v+1):
         return True

@@ -118,11 +118,7 @@ while True:
             else:
                 bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
             
-                
-                
-            
-            
-            
+          
         except ValueError:
             print("\n\x1b[1;31m"+"Error: Itsn't posible set the current position (MathDomain Error)\n")
             print("\x1b[0;37m",end="")
