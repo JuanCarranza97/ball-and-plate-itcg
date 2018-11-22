@@ -255,6 +255,28 @@ def two_points_length(pointa,pointb):
     dis = math.sqrt(math.pow(pointb[0]-pointa[0],2)+math.pow(pointb[1]-pointa[1],2)+math.pow(pointb[2]-pointa[2],2))
     return dis
 
-    
+def map_value(x,in_min,in_max,out_min,out_max):
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
+def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offline",servos=[]):
+    maped_servos = []
+    min_p = [90,0,90,0,90,0]
+    max_p = [180,90,180,90,180,90]
+    
+    end_correctly= True
+    for i in range(6):
+        maped_servos.append(int(map_value(servos_value[i],min_p[i],max_p[i],min_val[i],max_val[i])))
+        
+        if  not(is_number_in(maped_servos[i],lim_min[i],lim_max[i])):
+            print("It's not posible to set {} position to servo {}".format(maped_servos[i],i))
+            end_correctly = False
+    if end_correctly:
+        print("Aqui se pondran los valores de los servos")
+        
+
+def is_number_in(number,min_v,max_v):
+    if number in range(min_v,max_v+1):
+        return True
+    else:
+        return False
     
