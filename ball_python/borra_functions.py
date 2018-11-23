@@ -258,7 +258,7 @@ def two_points_length(pointa,pointb):
 def map_value(x,in_min,in_max,out_min,out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offline",servos=[]):
+def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offline",servos):
     maped_servos = []
     min_p = [90,0,90,0,90,0]
     max_p = [180,90,180,90,180,90]
@@ -275,7 +275,7 @@ def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offlin
             print("Setting servos pos in PCA9685")
             for i in range(6):
                 print("Servo {} in {} degree".format(i,maped_servos[i]))
-                servos[i].angles = maped_servos[i]
+                servos[i].angle = maped_servos[i]
         
 def is_number_in(number,min_v,max_v):
     if number in range(min_v,max_v+1):
