@@ -258,7 +258,7 @@ def two_points_length(pointa,pointb):
 def map_value(x,in_min,in_max,out_min,out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offline",servos):
+def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offline",servos = []):
     maped_servos = []
     min_p = [90,0,90,0,90,0]
     max_p = [180,90,180,90,180,90]
@@ -272,9 +272,9 @@ def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offlin
             end_correctly = False
     if end_correctly:
         if mode == "online":
-            print("Setting servos pos in PCA9685")
+            #print("Setting servos pos in PCA9685")
             for i in range(6):
-                print("Servo {} in {} degree".format(i,maped_servos[i]))
+                #print("Servo {} in {} degree".format(i,maped_servos[i]))
                 servos[i].angle = maped_servos[i]
         
 def is_number_in(number,min_v,max_v):
@@ -283,3 +283,24 @@ def is_number_in(number,min_v,max_v):
     else:
         return False
     
+def list_str(lista):
+    str_l = ""
+    loop = 0
+    for i in lista:
+        if loop != 2:
+            str_l+=str(i).rjust(3,' ')+","
+        else:
+            str_l+=str(i).rjust(3,' ')
+        loop+=1
+    return str_l
+
+def print_records(angles_input,translation_input):
+    for i in range(len(angles_input)):       
+        angles_input[i]= list(map(int,angles_input[i]))
+        translation_input[i]= list(map(int,translation_input[i]))
+    
+    print("{}The rerun memory values are{}".format("-"*4,"-"*4))
+    print("|record|   angles    | translation |")
+    
+    for i in range(len(angles_input)):
+        print("|    {}| {} | {} |".format(str(i+1).rjust(2,' '),list_str(angles_input[i]),list_str(translation_input[i])))
