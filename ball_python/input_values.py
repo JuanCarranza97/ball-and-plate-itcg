@@ -92,88 +92,70 @@ angles_rerun =  []
 translation_rerun = []
 
 while True:
-    input_k = input("Introduzca los valores de yaw,pitch,roll tx,ty,yz\n")
-    if input_k in ["end","exit"]:
-        break
-    elif input_k  == "clear":
-        angles_rerun =  []
-        translation_rerun = []
-        print("recorded values cleared")
-    elif input_k == "rerun":
-        if len(angles_rerun) == 0:
-            print("There isn't any record")
-        else:
-            for current in range(len(angles_rerun)):
-                plate_points = bf.plate_points(centroid_dist,scrapt,angles_rerun[current],translation_rerun[current])
+    input_argv = input("Introduzca los valores de yaw,pitch,roll tx,ty,yz o un comando valido\n")
+       
+    input_argv = input_argv.split(" ")
+    
+    while len(input_argv) > 0:
+        current = input_argv.pop(0)
+        
+        if current in ["end","exit"]:
+            print("Clossing app ..")
+            exit(0)
                 
-                theta1,theta2 = bf.get_servo_angle(plate_points,servo_links,base_points)
+        elif current == "clear":
+            angles_rerun =  []
+            translation_rerun = []
+            print("recorded values cleared")
+            
+        elif current == "rerun":
+            if len(input_argv) >= 2:
+                val = int(input_argv.pop(0))
+                delay = int(input_argv.pop(0))
+                delay = delay/1000
+                print("Se correra {} veces".format(val))
+            else:
+                print("Error: You should put almost 1 rerun ant the time in milliseconds")
+                
+            if len(angles_rerun) == 0:
+                print("There isn't any record")
+            else:
+                for rerun_val in range(val):
+                    for current in range(len(angles_rerun)):
+                        plate_points = bf.plate_points(centroid_dist,scrapt,angles_rerun[current],translation_rerun[current])
                     
-                os.system('clear')
-                servos_value = []
-                for i in theta1:
-                    servos_value.append(int(i[0]))
+                        theta1,theta2 = bf.get_servo_angle(plate_points,servo_links,base_points)
+                        
+                        os.system('clear')
+                        print("Rerun {} - Record {}".format(rerun_val+1,current+1))
+                        servos_value = []
+                        for i in theta1:
+                            servos_value.append(int(i[0]))
+                    
+                        print("{}Angles{}\nYaw = {} | Pitch = {} | Roll = {}".format("-"*15,"-"*15,str(angles_rerun[current][0]).rjust(3,' '),str(angles_rerun[current][1]).rjust(3,' '),str(angles_rerun[current][2]).rjust(3,' ')))
+                        print("{}Translation{}\nDx  = {} | Dy    = {} | Dz   = {}".format("-"*12,"-"*13,str(translation_rerun[current][0]).rjust(3,' '),str(translation_rerun[current][1]).rjust(3,' '),str(translation_rerun[current][2]).rjust(3,' ')))
                 
+                        ##################imprimir lo de los servos#####
+                        print("\n{}The servos value are{}\n".format("-"*11,"-"*12),end="")        
+                        print("|",end="")
+                        for i in range(6):
+                            print(" ser{} |".format(i),end="")
+                        print("\n|",end="")
+                        for i in range(6):
+                            print(" {} |".format(str(servos_value[i]).rjust(4,' ')),end="")
+                        print("\n"+"-"*43+"\n")
+                    
+                        ###actualiza los seervos si esta en linea
+                        if mode == "online":
+                            bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
+                        else:
+                            bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
+                        sleep(delay)
+                os.system('clear')
+                print("Done rerun")
                 print("{}Angles{}\nYaw = {} | Pitch = {} | Roll = {}".format("-"*15,"-"*15,str(angles_rerun[current][0]).rjust(3,' '),str(angles_rerun[current][1]).rjust(3,' '),str(angles_rerun[current][2]).rjust(3,' ')))
                 print("{}Translation{}\nDx  = {} | Dy    = {} | Dz   = {}".format("-"*12,"-"*13,str(translation_rerun[current][0]).rjust(3,' '),str(translation_rerun[current][1]).rjust(3,' '),str(translation_rerun[current][2]).rjust(3,' ')))
-            
-                ##################imprimir lo de los servos#####
-                print("\n{}The servos value are{}\n".format("-"*11,"-"*12),end="")        
-                print("|",end="")
-                for i in range(6):
-                    print(" ser{} |".format(i),end="")
-                print("\n|",end="")
-                for i in range(6):
-                    print(" {} |".format(str(servos_value[i]).rjust(4,' ')),end="")
-                print("\n"+"-"*43+"\n")
-                
-                ###actualiza los seervos si esta en linea
-                if mode == "online":
-                    bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
-                else:
-                    bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
-                
-                sleep(.5)
-            os.system('clear')
-            print("Done rerun")
-            print("{}Angles{}\nYaw = {} | Pitch = {} | Roll = {}".format("-"*15,"-"*15,str(angles_rerun[current][0]).rjust(3,' '),str(angles_rerun[current][1]).rjust(3,' '),str(angles_rerun[current][2]).rjust(3,' ')))
-            print("{}Translation{}\nDx  = {} | Dy    = {} | Dz   = {}".format("-"*12,"-"*13,str(translation_rerun[current][0]).rjust(3,' '),str(translation_rerun[current][1]).rjust(3,' '),str(translation_rerun[current][2]).rjust(3,' ')))
         
-            ##################imprimir lo de los servos#####
-            print("\n{}The servos value are{}\n".format("-"*11,"-"*12),end="")        
-            print("|",end="")
-            for i in range(6):
-                print(" ser{} |".format(i),end="")
-            print("\n|",end="")
-            for i in range(6):
-                print(" {} |".format(str(servos_value[i]).rjust(4,' ')),end="")
-            print("\n"+"-"*43+"\n")
-            bf.print_records(angles_rerun,translation_rerun)
-    else:       
-        matcher = re.compile(r'([-]?[0-9]+[.]?[0-9]?[,]){2}[-]?[0-9]+[.]?[0-9]?[ ]([-]?[0-9]+[.]?[0-9]?[,]){2}[-]?[0-9]+[.]?[0-9]?$')
-
-        if matcher.match(input_k):
-            input_k = input_k.split(" ")
-            
-            angles = input_k[0].split(",")
-            angles = list(map(int,angles))
-            
-            translation = input_k[1].split(",")
-            translation = list(map(float,translation))
-            
-                    
-            plate_points = bf.plate_points(centroid_dist,scrapt,angles,translation)
-            
-            try:
-                theta1,theta2 = bf.get_servo_angle(plate_points,servo_links,base_points)
-                
-                os.system('clear')
-                servos_value = []
-                for i in theta1:
-                    servos_value.append(int(i[0]))
-                
-                print("{}Angles{}\nYaw = {} | Pitch = {} | Roll = {}".format("-"*15,"-"*15,str(angles[0]).rjust(3,' '),str(angles[1]).rjust(3,' '),str(angles[2]).rjust(3,' ')))
-                print("{}Translation{}\nDx  = {} | Dy    = {} | Dz   = {}".format("-"*12,"-"*13,str(translation[0]).rjust(3,' '),str(translation[1]).rjust(3,' '),str(translation[2]).rjust(3,' ')))
-            
                 ##################imprimir lo de los servos#####
                 print("\n{}The servos value are{}\n".format("-"*11,"-"*12),end="")        
                 print("|",end="")
@@ -183,34 +165,92 @@ while True:
                 for i in range(6):
                     print(" {} |".format(str(servos_value[i]).rjust(4,' ')),end="")
                 print("\n"+"-"*43+"\n")
-                
-                ###actualiza los seervos si esta en linea
-                if mode == "online":
-                    bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
-                else:
-                    bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
-                
-                if plot:
-                    plt.cla()
-                    bf.draw_axis(110,110,220,ax,fig)
-
-                    bf.draw_by_points(base_points,ax,fig,'orangered')
-                    bf.draw_by_points(plate_points,ax,fig,'dodgerblue')
-
-                    bf.draw_servo(base_points,plate_points,servo_links[0],theta1,ax,fig)
-                    
-                angles_rerun.append(angles)
-                translation_rerun.append(translation)
                 bf.print_records(angles_rerun,translation_rerun)
-                #for i in range(len(angles_rerun)):
-                #    print("  {}.- 
-            except ValueError:
-                print("\n\x1b[1;31m"+"Error: Itsn't posible set the current position (MathDomain Error)\n")
-                print("\x1b[0;37m",end="")
-              
-        else:
-            print("The input doesn't match :c\nwould  you like to close it? [yes],no")
             
+        elif current == "set":
+            textl = ""
+            if len(input_argv) >= 2:
+                textl+= input_argv.pop(0)+" "
+                textl+= input_argv.pop(0)
+            else:
+                print("Error: You should put almost 1 time")
+                
+            matcher = re.compile(r'([-]?[0-9]+[.]?[0-9]?[,]){2}[-]?[0-9]+[.]?[0-9]?[ ]([-]?[0-9]+[.]?[0-9]?[,]){2}[-]?[0-9]+[.]?[0-9]?$')
+
+            if matcher.match(textl):
+                textl = textl.split(" ")
+                
+                angles = textl[0].split(",")
+                angles = list(map(int,angles))
+                
+                translation = textl[1].split(",")
+                translation = list(map(float,translation))
+                
+                        
+                plate_points = bf.plate_points(centroid_dist,scrapt,angles,translation)
+                
+                try:
+                    theta1,theta2 = bf.get_servo_angle(plate_points,servo_links,base_points)
+                    
+                    os.system('clear')
+                    servos_value = []
+                    for i in theta1:
+                        servos_value.append(int(i[0]))
+                    
+                    print("{}Angles{}\nYaw = {} | Pitch = {} | Roll = {}".format("-"*15,"-"*15,str(angles[0]).rjust(3,' '),str(angles[1]).rjust(3,' '),str(angles[2]).rjust(3,' ')))
+                    print("{}Translation{}\nDx  = {} | Dy    = {} | Dz   = {}".format("-"*12,"-"*13,str(translation[0]).rjust(3,' '),str(translation[1]).rjust(3,' '),str(translation[2]).rjust(3,' ')))
+                
+                    ##################imprimir lo de los servos#####
+                    print("\n{}The servos value are{}\n".format("-"*11,"-"*12),end="")        
+                    print("|",end="")
+                    for i in range(6):
+                        print(" ser{} |".format(i),end="")
+                    print("\n|",end="")
+                    for i in range(6):
+                        print(" {} |".format(str(servos_value[i]).rjust(4,' ')),end="")
+                    print("\n"+"-"*43+"\n")
+                    
+                    ###actualiza los seervos si esta en linea
+                    if mode == "online":
+                        bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
+                    else:
+                        bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
+                    
+                    if plot:
+                        plt.cla()
+                        bf.draw_axis(110,110,220,ax,fig)
+
+                        bf.draw_by_points(base_points,ax,fig,'orangered')
+                        bf.draw_by_points(plate_points,ax,fig,'dodgerblue')
+
+                        bf.draw_servo(base_points,plate_points,servo_links[0],theta1,ax,fig)
+                        
+                    angles_rerun.append(angles)
+                    translation_rerun.append(translation)
+                    bf.print_records(angles_rerun,translation_rerun)
+                    #for i in range(len(angles_rerun)):
+                    #    print("  {}.- 
+                except ValueError:
+                    print("\n\x1b[1;31m"+"Error: Itsn't posible set the current position (MathDomain Error)\n")
+                    print("\x1b[0;37m",end="")
+                  
+            else:
+                print("The input doesn't match :c\nwould  you like to close it? [yes],no")
+                
+                while True:
+                    ans = input()
+                    ans = ans.lower()
+                    if ans in ["yes","y"] or len(ans) == 0:
+                        print("Bye Bye B)")
+                        exit()
+                    elif ans in ["no","n"]:
+                        break
+                    else:
+                        print("Yes or No???")
+        else:
+            input_argv = []
+            print("Invalid Input: {} was not specified".format(current))
+            print("would  you like to close it? [yes],no")
             while True:
                 ans = input()
                 ans = ans.lower()
@@ -220,4 +260,6 @@ while True:
                 elif ans in ["no","n"]:
                     break
                 else:
-                    print("Yes or No???")    
+                    print("Yes or No???")
+    
+  
