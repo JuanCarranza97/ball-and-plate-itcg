@@ -58,6 +58,7 @@ if mode == "online":
     home_degree = [97,83,95,85,90,77]
     #home_degree = [5,157,12,170,7,173]
     servos = []
+
     for i in range(6):
 	    servos.append(servo.Servo(pca.channels[pca_channels[i]], min_pulse=a, max_pulse=b))
 	    servos[i].angle = home_degree[i]
@@ -106,7 +107,22 @@ while True:
             angles_rerun =  []
             translation_rerun = []
             print("recorded values cleared")
-            
+        elif current == "read":
+        	if len(input_argv) >= 1:
+        		file_name = input_argv.pop(0)
+        		angles_rerun,translation_rerun = bf.read_records(file_name)
+        		os.system('clear')
+        		bf.print_records(angles_rerun,translation_rerun)
+
+        elif current == "save":
+        	if len(input_argv) >= 1:
+        		file_name = input_argv.pop(0)
+
+        		if len(angles_rerun) >= 1:
+        			bf.save_records(angles_rerun,translation_rerun,file_name)
+        			print("{} was succesfuly saved".format(file_name))
+        		else:
+        			pritt("Nothing for save :c")
         elif current == "rerun":
             if len(input_argv) >= 2:
                 val = int(input_argv.pop(0))
@@ -241,7 +257,7 @@ while True:
                     #for i in range(len(angles_rerun)):
                     #    print("  {}.- 
                 except ValueError:
-                    print("\n\x1b[1;31m"+"Error: Itsn't posible set the current position (MathDomain Error)\n")
+                    print("\n\x1b[1;31m"+"Error: It isn't posible set the current position (MathDomain Error)\n")
                     print("\x1b[0;37m",end="")
                   
             else:
@@ -271,5 +287,3 @@ while True:
                     break
                 else:
                     print("Yes or No???")
-    
-  

@@ -304,3 +304,32 @@ def print_records(angles_input,translation_input):
     
     for i in range(len(angles_input)):
         print("|    {}| {} | {} |".format(str(i+1).rjust(2,' '),list_str(angles_input[i]),list_str(translation_input[i])))
+
+def save_records(angles_input,translation_input,file_name):
+    file = open(file_name+".txt","w")
+    for i in range(len(angles_input)):
+        if i == (len(angles_input)-1):
+            file.write(list_str(angles_input[i])+"#"+list_str(translation_input[i]))
+        else:
+            file.write(list_str(angles_input[i])+"#"+list_str(translation_input[i])+"\n")
+    file.close()
+
+def read_records(file_name):
+    try:
+        file = open(file_name+".txt","r")
+        file = file.read()
+        file = file.split("\n")
+        angles = []
+        translation = []
+        loop=1
+        for current_record in file:
+            current_record = current_record.split("#")
+            angles.append(list(map(int,current_record[0].split(","))))
+            translation.append(list(map(int,current_record[1].split(","))))
+        return angles,translation
+
+
+    except:
+        print("\n\x1b[1;31m",end="")
+        print("Error: The file {} wasn't foound\n".format(file_name))
+        print("\x1b[0;37m",end="")
