@@ -174,7 +174,7 @@ def draw_by_points(points,ax,fig,color):
     z.append(z[0])
     
     ax.plot3D(x,y,z,c=color)
-    fig.canvas.draw()
+    #fig.canvas.draw()
     
 def draw_axis(axis_x,axis_y,axis_z,ax,fig):
     ax.set_xlim(-axis_x,axis_x)
@@ -185,27 +185,27 @@ def draw_axis(axis_x,axis_y,axis_z,ax,fig):
     y = [0,0]
     z = [0,0]
     ax.plot3D(x,y,z,'--r')
-    fig.canvas.draw()
+    #fig.canvas.draw()
     x = [0,axis_x]
     y = [0,0]
     z = [0,0]
     ax.plot3D(x,y,z,'r')
-    fig.canvas.draw()
+    #fig.canvas.draw()
     x = [0,0]
     y = [-axis_y,0]
     z = [0,0]
     ax.plot3D(x,y,z,'--b')
-    fig.canvas.draw()
+    #fig.canvas.draw()
     x = [0,0]
     y = [0,axis_y]
     z = [0,0]
     ax.plot3D(x,y,z,'b')
-    fig.canvas.draw()
+    #fig.canvas.draw()
     x = [0,0]
     y = [0,0]
     z = [0,axis_z]
     ax.plot3D(x,y,z,'g')
-    fig.canvas.draw()
+    #fig.canvas.draw()
 
 def draw_servo(base_points,plate_points,servos_length,angles,ax,fig):
     servo_points=[]
@@ -246,10 +246,10 @@ def draw_servo(base_points,plate_points,servos_length,angles,ax,fig):
     for i in range(6):
         ax.plot3D([base_points[i][0],servo_points[i][0][0]],[base_points[i][1],servo_points[i][0][1]],[base_points[i][2],servo_points[i][0][2]],'k')
         ax.plot3D([plate_points[i][0],servo_points[i][0][0]],[plate_points[i][1],servo_points[i][0][1]],[plate_points[i][2],servo_points[i][0][2]],'k')
-        fig.canvas.draw()
+        #fig.canvas.draw()
         ax.plot3D([base_points[i][0],servo_points[i][1][0]],[base_points[i][1],servo_points[i][1][1]],[base_points[i][2],servo_points[i][1][2]],':k')
         ax.plot3D([plate_points[i][0],servo_points[i][1][0]],[plate_points[i][1],servo_points[i][1][1]],[plate_points[i][2],servo_points[i][1][2]],':k')
-        fig.canvas.draw()
+        #fig.canvas.draw()
     
 def two_points_length(pointa,pointb):
     dis = math.sqrt(math.pow(pointb[0]-pointa[0],2)+math.pow(pointb[1]-pointa[1],2)+math.pow(pointb[2]-pointa[2],2))

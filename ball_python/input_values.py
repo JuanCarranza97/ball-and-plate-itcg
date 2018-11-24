@@ -36,7 +36,6 @@ max_signal_degree = [97,170,95,173,90,157]
 pca_channels = [4,5,6,7,0,1]
 ##################################
 
-
 if mode == "online":
     from board import SCL, SDA
     import busio
@@ -150,6 +149,16 @@ while True:
                             bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
                         else:
                             bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
+                        
+                        if plot:
+                        	plt.cla()
+                        	bf.draw_axis(110,110,220,ax,fig)
+
+                        	bf.draw_by_points(base_points,ax,fig,'orangered')
+                        	bf.draw_by_points(plate_points,ax,fig,'dodgerblue')
+
+                        	bf.draw_servo(base_points,plate_points,servo_links[0],theta1,ax,fig)
+                        	fig.canvas.draw()
                         sleep(delay)
                 os.system('clear')
                 print("Done rerun")
@@ -224,6 +233,7 @@ while True:
                         bf.draw_by_points(plate_points,ax,fig,'dodgerblue')
 
                         bf.draw_servo(base_points,plate_points,servo_links[0],theta1,ax,fig)
+                        fig.canvas.draw()
                         
                     angles_rerun.append(angles)
                     translation_rerun.append(translation)
