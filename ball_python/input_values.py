@@ -162,9 +162,9 @@ while True:
                     
                         ###actualiza los seervos si esta en linea
                         if mode == "online":
-                            bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
+                            end_servo = bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
                         else:
-                            bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
+                            end_servo = bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
                         
                         if plot:
                         	plt.cla()
@@ -237,11 +237,11 @@ while True:
                     
                     ###actualiza los seervos si esta en linea
                     if mode == "online":
-                        bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
+                        end_servo = bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal,mode,servos)
                     else:
-                        bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
+                        end_servo = bf.set_servo_values(servos_value,min_signal_degree,max_signal_degree,min_servo_signal,max_servo_signal)
                     
-                    if plot:
+                    if plot and end_servo:
                         plt.cla()
                         bf.draw_axis(110,110,220,ax,fig)
 
@@ -250,10 +250,14 @@ while True:
 
                         bf.draw_servo(base_points,plate_points,servo_links[0],theta1,ax,fig)
                         fig.canvas.draw()
-                        
-                    angles_rerun.append(angles)
-                    translation_rerun.append(translation)
-                    bf.print_records(angles_rerun,translation_rerun)
+                    
+                    if end_servo:
+                        angles_rerun.append(angles)
+                        translation_rerun.append(translation)
+                        bf.print_records(angles_rerun,translation_rerun)
+                    else:
+                        print("The current position was not add")
+                        bf.print_records(angles_rerun,translation_rerun)
                     #for i in range(len(angles_rerun)):
                     #    print("  {}.- 
                 except ValueError:

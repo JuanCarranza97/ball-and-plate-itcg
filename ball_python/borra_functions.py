@@ -270,12 +270,14 @@ def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offlin
         if  not(is_number_in(maped_servos[i],lim_min[i],lim_max[i])):
             print("It's not posible to set {} position to servo {}".format(maped_servos[i],i))
             end_correctly = False
+            break
     if end_correctly:
         if mode == "online":
             #print("Setting servos pos in PCA9685")
             for i in range(6):
                 #print("Servo {} in {} degree".format(i,maped_servos[i]))
                 servos[i].angle = maped_servos[i]
+    return end_correctly
         
 def is_number_in(number,min_v,max_v):
     if number in range(min_v,max_v+1):
