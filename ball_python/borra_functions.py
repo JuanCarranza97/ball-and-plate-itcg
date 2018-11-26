@@ -174,7 +174,7 @@ def draw_by_points(points,ax,fig,color):
     z.append(z[0])
     
     ax.plot3D(x,y,z,c=color)
-    fig.canvas.draw()
+    #fig.canvas.draw()
     
 def draw_axis(axis_x,axis_y,axis_z,ax,fig):
     ax.set_xlim(-axis_x,axis_x)
@@ -185,27 +185,27 @@ def draw_axis(axis_x,axis_y,axis_z,ax,fig):
     y = [0,0]
     z = [0,0]
     ax.plot3D(x,y,z,'--r')
-    fig.canvas.draw()
+    #fig.canvas.draw()
     x = [0,axis_x]
     y = [0,0]
     z = [0,0]
     ax.plot3D(x,y,z,'r')
-    fig.canvas.draw()
+    #fig.canvas.draw()
     x = [0,0]
     y = [-axis_y,0]
     z = [0,0]
     ax.plot3D(x,y,z,'--b')
-    fig.canvas.draw()
+    #fig.canvas.draw()
     x = [0,0]
     y = [0,axis_y]
     z = [0,0]
     ax.plot3D(x,y,z,'b')
-    fig.canvas.draw()
+    #fig.canvas.draw()
     x = [0,0]
     y = [0,0]
     z = [0,axis_z]
     ax.plot3D(x,y,z,'g')
-    fig.canvas.draw()
+    #fig.canvas.draw()
 
 def draw_servo(base_points,plate_points,servos_length,angles,ax,fig):
     servo_points=[]
@@ -246,10 +246,10 @@ def draw_servo(base_points,plate_points,servos_length,angles,ax,fig):
     for i in range(6):
         ax.plot3D([base_points[i][0],servo_points[i][0][0]],[base_points[i][1],servo_points[i][0][1]],[base_points[i][2],servo_points[i][0][2]],'k')
         ax.plot3D([plate_points[i][0],servo_points[i][0][0]],[plate_points[i][1],servo_points[i][0][1]],[plate_points[i][2],servo_points[i][0][2]],'k')
-        fig.canvas.draw()
+        #fig.canvas.draw()
         ax.plot3D([base_points[i][0],servo_points[i][1][0]],[base_points[i][1],servo_points[i][1][1]],[base_points[i][2],servo_points[i][1][2]],':k')
         ax.plot3D([plate_points[i][0],servo_points[i][1][0]],[plate_points[i][1],servo_points[i][1][1]],[plate_points[i][2],servo_points[i][1][2]],':k')
-        fig.canvas.draw()
+        #fig.canvas.draw()
     
 def two_points_length(pointa,pointb):
     dis = math.sqrt(math.pow(pointb[0]-pointa[0],2)+math.pow(pointb[1]-pointa[1],2)+math.pow(pointb[2]-pointa[2],2))
@@ -270,12 +270,14 @@ def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offlin
         if  not(is_number_in(maped_servos[i],lim_min[i],lim_max[i])):
             print("It's not posible to set {} position to servo {}".format(maped_servos[i],i))
             end_correctly = False
+            break
     if end_correctly:
         if mode == "online":
             #print("Setting servos pos in PCA9685")
             for i in range(6):
                 #print("Servo {} in {} degree".format(i,maped_servos[i]))
                 servos[i].angle = maped_servos[i]
+    return end_correctly
         
 def is_number_in(number,min_v,max_v):
     if number in range(min_v,max_v+1):
@@ -304,3 +306,32 @@ def print_records(angles_input,translation_input):
     
     for i in range(len(angles_input)):
         print("|    {}| {} | {} |".format(str(i+1).rjust(2,' '),list_str(angles_input[i]),list_str(translation_input[i])))
+
+def save_records(angles_input,translation_input,file_name):
+    file = open(file_name+".txt","w")
+    for i in range(len(angles_input)):
+        if i == (len(angles_input)-1):
+            file.write(list_str(angles_input[i])+"#"+list_str(translation_input[i]))
+        else:
+            file.write(list_str(angles_input[i])+"#"+list_str(translation_input[i])+"\n")
+    file.close()
+
+def read_records(file_name):
+    try:
+        file = open(file_name+".txt","r")
+        file = file.read()
+        file = file.split("\n")
+        angles = []
+        translation = []
+        loop=1
+        for current_record in file:
+            current_record = current_record.split("#")
+            angles.append(list(map(int,current_record[0].split(","))))
+            translation.append(list(map(int,current_record[1].split(","))))
+        return angles,translation
+
+
+    except:
+        print("\n\x1b[1;31m",end="")
+        print("Error: The file {} wasn't foound\n".format(file_name))
+        print("\x1b[0;37m",end="")
