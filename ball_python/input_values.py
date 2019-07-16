@@ -1,4 +1,5 @@
 import sys
+import platform 
 
 mode = "offline"
 plot = False
@@ -86,7 +87,7 @@ if plot:
 print("Done B)")
 sleep(.5)
 
-os.system('clear')
+bf.clear_screen()
 
 angles_rerun =  []
 translation_rerun = []
@@ -111,7 +112,8 @@ while True:
         	if len(input_argv) >= 1:
         		file_name = input_argv.pop(0)
         		angles_rerun,translation_rerun = bf.read_records(file_name)
-        		os.system('clear')
+
+        		bf.clear_screen()
         		bf.print_records(angles_rerun,translation_rerun)
 
         elif current == "save":
@@ -141,7 +143,7 @@ while True:
                     
                         theta1,theta2 = bf.get_servo_angle(plate_points,servo_links,base_points)
                         
-                        os.system('clear')
+                        bf.clear_screen()
                         print("Rerun {} - Record {}".format(rerun_val+1,current+1))
                         servos_value = []
                         for i in theta1:
@@ -176,7 +178,7 @@ while True:
                         	bf.draw_servo(base_points,plate_points,servo_links[0],theta1,ax,fig)
                         	fig.canvas.draw()
                         sleep(delay)
-                os.system('clear')
+                bf.clear_screen()
                 print("Done rerun")
                 print("{}Angles{}\nYaw = {} | Pitch = {} | Roll = {}".format("-"*15,"-"*15,str(angles_rerun[current][0]).rjust(3,' '),str(angles_rerun[current][1]).rjust(3,' '),str(angles_rerun[current][2]).rjust(3,' ')))
                 print("{}Translation{}\nDx  = {} | Dy    = {} | Dz   = {}".format("-"*12,"-"*13,str(translation_rerun[current][0]).rjust(3,' '),str(translation_rerun[current][1]).rjust(3,' '),str(translation_rerun[current][2]).rjust(3,' ')))
@@ -217,7 +219,7 @@ while True:
                 try:
                     theta1,theta2 = bf.get_servo_angle(plate_points,servo_links,base_points)
                     
-                    os.system('clear')
+                    bf.clear_screen()
                     servos_value = []
                     for i in theta1:
                         servos_value.append(int(i[0]))

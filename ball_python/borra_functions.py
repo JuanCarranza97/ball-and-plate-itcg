@@ -1,5 +1,11 @@
 import numpy as np
-import math
+import platform,os,math
+
+def clear_screen():
+    if platform.system() == 'Windows':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 def position_translate(position,delta):
     """
