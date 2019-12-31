@@ -21,7 +21,7 @@ def kill_all_process(program_string):
             if int(ps_pid) != os.getpid():
                 #print("  -->This process will be killed (PID: {}):)".format(ps_pid))
                 if ps_user  == "root":
-                    return_code = os.system("kill -9 {}".format(ps_pid))
+                    return_code = os.system("sudo kill -9 {}".format(ps_pid))
                 else:
                     return_code = os.system("kill -9 {}".format(ps_pid))
                 
