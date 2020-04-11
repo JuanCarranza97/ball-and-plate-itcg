@@ -3,7 +3,7 @@ from serial.tools.list_ports import comports as _comports
 from serial import Serial as _serial
 import re as _re
 import argparse as _argparse
-from time import sleep
+from time import sleep as _sleep
 
 class servos_serial:
     def __init__(self,port,baud_rate=115200):
@@ -88,6 +88,12 @@ if __name__ == "__main__":
 
     arduino = servos_serial(args.port)
     print("Python serial demo for PCA9685 and arduino :)\n")
+    print("Turning ON LED ")
+    arduino.send_data("l",1)
+    _sleep(1)
+    print("Turning OFF LED ")
+    arduino.send_data("l",0)
+    _sleep(1)
     try:
         if args.platform:
             values = args.platform.split(",")
