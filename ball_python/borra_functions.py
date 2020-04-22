@@ -1,5 +1,8 @@
 import numpy as np
 import platform,os,math
+import servo_platform as _servo_platform
+
+platform = _servo_platform.servos_serial("COM6")
 
 def clear_screen():
     if platform.system() == 'Windows':
@@ -264,7 +267,7 @@ def two_points_length(pointa,pointb):
 def map_value(x,in_min,in_max,out_min,out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offline",servos = []):
+def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offline"):
     maped_servos = []
     min_p = [90,0,90,0,90,0]
     max_p = [180,90,180,90,180,90]
@@ -279,10 +282,11 @@ def set_servo_values(servos_value,min_val,max_val,lim_min,lim_max,mode = "offlin
             break
     if end_correctly:
         if mode == "online":
+            platform.set_platform(maped_servos)
             #print("Setting servos pos in PCA9685")
-            for i in range(6):
-                #print("Servo {} in {} degree".format(i,maped_servos[i]))
-                servos[i].angle = maped_servos[i]
+            #for i in range(6):
+            #    #print("Servo {} in {} degree".format(i,maped_servos[i]))
+            #    servos[i].angle = maped_servos[i]
     return end_correctly
         
 def is_number_in(number,min_v,max_v):

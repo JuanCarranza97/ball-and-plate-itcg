@@ -88,12 +88,13 @@ if __name__ == "__main__":
 
     arduino = servos_serial(args.port)
     print("Python serial demo for PCA9685 and arduino :)\n")
+    _sleep(2)
     print("Turning ON LED ")
     arduino.send_data("l",1)
-    _sleep(1)
+    _sleep(.5)
     print("Turning OFF LED ")
     arduino.send_data("l",0)
-    _sleep(1)
+    _sleep(.5)
     try:
         if args.platform:
             values = args.platform.split(",")
