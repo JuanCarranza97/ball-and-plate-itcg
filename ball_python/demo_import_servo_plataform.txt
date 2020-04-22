@@ -1,0 +1,18 @@
+D:\Users\jorge\OneDrive\Documentos\TEC\10º Semestre\Proyecto de residencias\ball-and-plate-itcg\ball_python>python
+Python 3.8.2 (tags/v3.8.2:7b3ab59, Feb 25 2020, 22:45:29) [MSC v.1916 32 bit (Intel)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from servo_platform import *
+>>> platform = servos_serial("COM6")
+>>> platform.send_data("l",1)
+>>> platform.send_data("l",0)
+>>> platform.send_data("l",1)
+>>> platform.set_servo(4,20)
+>>> platform.set_servo(4,90)
+>>> platform.set_servo(4,50)
+>>> help(platform.set_platform)
+Help on method set_platform in module servo_platform:
+
+set_platform(angles) method of servo_platform.servos_serial instance
+
+>>> platform.close_port()
+>>> exit()
