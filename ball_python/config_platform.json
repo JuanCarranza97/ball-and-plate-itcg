@@ -1,0 +1,38 @@
+{
+    "Platform":{
+        "base_length":92.4,
+        "servo_links":[17,115],
+        "scrapt_x":15,
+        "scrapt_y":15,
+        "centroid_dist": 59.1,
+        "axis":{
+            "x":110,
+            "y":110,
+            "z":220
+        },
+        "home":{
+            "translation":{
+                "x":0,
+                "y":0,
+                "z":117
+            },
+            "angles":{
+                "yaw":0,
+                "pitch":0,
+                "roll":0
+            }
+        }
+    }, 
+
+    "Servos":{
+        "min_servo_signal": [0,66,0,64,0,70],
+        "max_servo_signal": [108,180,106,180,104,180],
+
+        "min_signal_degree": [12,83,7,85,5,77],
+        "max_signal_degree": [97,170,95,173,90,157],
+
+        "pca_channels": [4,5,6,7,0,1]
+
+    }
+
+}

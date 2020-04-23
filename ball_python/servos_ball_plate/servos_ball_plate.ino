@@ -4,15 +4,22 @@
 #include "UART.h"
 
 #define LED 13
-
+//#define PLATFORM_1
+#define PLATFORM_2 
 Adafruit_PWMServoDriver servos = Adafruit_PWMServoDriver(0x40);
-
+#ifdef PLATFORM_1
 unsigned int pos0=152; // ancho de pulso en cuentas para pocicion 0°
 unsigned int pos180=585; // ancho de pulso en cuentas para la pocicion 180°
 
 int servo_home[6]={75,72,75,100,70,85};
 int pca_channels[6]={0,1,2,8,9,10};
+#elif defined( PLATFORM_2)
+unsigned int pos0=130; // ancho de pulso en cuentas para pocicion 0°
+unsigned int pos180=510; // ancho de pulso en cuentas para la pocicion 180°
 
+int servo_home[6]={140,30,140,40,152,24};
+int pca_channels[6]={1,2,3,4,5,6};
+#endif
 void setup() {
   pinMode(LED,OUTPUT);
   servos.begin();  
@@ -33,6 +40,17 @@ void loop() {
 
         if(uart_get(&caracter,&bufferSize,Numbers)){
           switch(caracter){
+            case 'd': //Find Duty using serial port
+                if(bufferSize == 2){
+                    number_servo=Numbers[0];
+                    int duty=Numbers[1];
+                    servos.setPWM(number_servo, 0, duty);  
+                    UART_PORT.print("Servo: ");
+                    UART_PORT.print(number_servo);
+                    UART_PORT.print(" Duty: ");
+                    UART_PORT.println(duty);
+                }
+               break;
             case 's'://Grados de servos individuales (s0,100)(numero de servo, grados) 
                 if(bufferSize == 2){
                     number_servo=Numbers[0];
